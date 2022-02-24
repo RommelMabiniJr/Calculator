@@ -1,3 +1,11 @@
+let displayCon = document.querySelector(".display")
+const numBtns = document.querySelectorAll(".digit-con button")
+
+numBtns.forEach( button => {
+    button.addEventListener('click', function(e) {
+        displayCon.textContent += e.target.textContent;
+    })
+})
 
 function operate(operator, a, b) {
 
