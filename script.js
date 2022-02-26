@@ -1,8 +1,13 @@
-let displayCon = document.querySelector(".display")
+let calcuScreen = document.querySelector(".display")
 const numBtns = document.querySelectorAll(".digit-con button")
-const operators = document.querySelectorAll(".operations-con button")
+const operators = document.querySelectorAll(".operations-con .arithmetic")
+const equalSign = document.querySelector(".equals-sign")
+
+
 let firstNum, secondNum, operatorUsed;
-let allowOperate = false;
+let operatorExist = false;
+let allowOperator = false;
+let equalIsUsed = false;
 let tempNum = 0;
 
 numBtns.forEach( button => {
@@ -14,6 +19,19 @@ operators.forEach(button => {
 })
 
 
+equalSign.addEventListener('click', function(e) {
+    if (!operatorExist) {
+        
+        secondNum = tempNum;
+        tempNum = "";
+
+        startCalculate();
+        operatorUsed = "";
+        equalIsUsed = true
+        allowOperator = true;
+    }
+})
+
 
 
 
@@ -21,44 +39,45 @@ operators.forEach(button => {
 
 
 function enterOperand(num) {
+    
     let number = num.target.textContent
-    displayCon.textContent += number;
+
+    if (equalIsUsed) {
+        tempNum = "";
+        calcuScreen.textContent = "";
+        equalIsUsed = false;
+    }
+
+    calcuScreen.textContent += number;
     tempNum += number;
 
     //Once we enter number, operand buttons are allowed
-    allowOperate = true
+    allowOperator = true;
+    operatorExist = false;
 }
 
 function enterOperator(operator) {
 
     //this simply limits the operand entered one at a time unless a number is entered.
-    if (allowOperate) {
+    if (allowOperator) {
 
-        if (operator.target.textContent == '=') {
-
-            //assuming that firsNum is already set, change num values to integers
+         //automatically calculates unfinished operation if operand is clicked instead of equal sign
+         if (operatorUsed) {
             secondNum = tempNum;
-            
-            startCalculate();
-            allowOperate = false
-
-
-
-
-        } else {
-
-            //automatically calculates unfinished operation if operand is clicked instead of equal sign
-            if (operatorUsed) {
-                secondNum = tempNum;
-                startCalculate();
-            }
-
-            firstNum = tempNum;
             tempNum = "";
-            operatorUsed = operator.target.textContent;
-            displayCon.textContent += operator.target.textContent;
-            allowOperate = false;
+            startCalculate();
         }
+
+        firstNum = tempNum;
+        tempNum = "";
+
+        operatorUsed = operator.target.textContent;
+        calcuScreen.textContent += operatorUsed;
+
+        allowOperator = false;
+        operatorExist = true;
+        equalIsUsed = false;
+
     }
 }
 
@@ -66,10 +85,13 @@ function startCalculate() {
     firstNum = Number(firstNum);
     secondNum = Number(secondNum);
 
-    displayCon.textContent = operate(operatorUsed, firstNum, secondNum);
+    calcuScreen.textContent = operate(operatorUsed, firstNum, secondNum);
 
-    //assign the result in the temp var to be automatically assigned as firstNum later on
-    tempNum = displayCon.textContent;
+    operatorUsed = "";
+    firstNum = "";
+    secondNum = ""
+
+    tempNum = calcuScreen.textContent;
 }
 
 function operate(operator, a, b) {
