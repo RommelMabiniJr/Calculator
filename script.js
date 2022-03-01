@@ -9,7 +9,7 @@ const del = document.querySelector(".delete")
 
 
 let firstNum, secondNum, operatorUsed;
-let operatorExist = false;
+let leftIsOperator = false;
 let allowOperator = false;
 let equalIsUsed = false;
 let tempNum = "";
@@ -24,7 +24,7 @@ operators.forEach(button => {
 
 
 equalSign.addEventListener('click', function(e) {
-    if (!operatorExist) {
+    if (!leftIsOperator) {
         
         secondNum = tempNum;
         tempNum = "";
@@ -67,11 +67,10 @@ del.addEventListener('click', function () {
             delCommence();
         }
         
-        operatorExist = false;
+        leftIsOperator = false;
         allowOperator = true;
     } else if (isDigit(calcuScreen.textContent)) {
         resetEverything();
-        console.log("yes its working")
 
     } else {
         delCommence();
@@ -91,6 +90,7 @@ function delCommence() {
     
 }
 
+//function to check if value is a single digit number
 function isDigit(val) {
     return String(+val).charAt(0) == val;
 }
@@ -105,7 +105,7 @@ function resetEverything() {
     secondNum = "";
     operatorUsed = "";
 
-    operatorExist = false;
+    leftIsOperator = false;
     allowOperator = false;
     equalIsUsed = false;
     tempNum = "";
@@ -127,7 +127,7 @@ function enterOperand(num) {
 
     //Once we enter number, operand buttons are allowed
     allowOperator = true;
-    operatorExist = false;
+    leftIsOperator = false;
 }
 
 function enterOperator(operator) {
@@ -148,7 +148,7 @@ function enterOperator(operator) {
         calcuScreen.textContent += operatorUsed;
 
         allowOperator = false;
-        operatorExist = true;
+        leftIsOperator = true;
         equalIsUsed = false;
 
     }
@@ -225,6 +225,11 @@ function divide(a, b) {
     return a / b;
 }
 
+
+
+
+
+//These portion is used for for the advanced/smart functionality of delete button to retain past calculations 
 
 let numNodes = 0;
 let prevNode;
