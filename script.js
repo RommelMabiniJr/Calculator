@@ -38,19 +38,17 @@ equalSign.addEventListener('click', function(e) {
 
 clearScr.addEventListener('click', resetEverything)
 
-let prcntClick;
-
 percent.addEventListener('click', function (e) {
-    prcntClick = true
-    tempNum = Number(tempNum)/100;
-    calcuScreen.textContent = firstNum + operatorUsed + tempNum;
-
-    if (prcntClick = false) {
-        tempNum = "";
-    } 
-
-    prcntClick = false;
-    
+    if (tempNum !== '') {
+        if (Number(calcuScreen.textContent)) {
+            calcuScreen.textContent = Number(calcuScreen.textContent)/100;
+            tempNum = calcuScreen.textContent;
+            
+        } else {
+            tempNum = Number(tempNum)/100;
+            calcuScreen.textContent = firstNum + operatorUsed + tempNum;
+        }
+    }
 })
 
 del.addEventListener('click', function () {
@@ -77,8 +75,10 @@ del.addEventListener('click', function () {
     }
 })
 
+//Separated into function for reusability
 function delCommence() {
     let txt = calcuScreen.textContent;
+    let notOperator;
 
     if (txt.length == 1) {
         calcuScreen.textContent = "";
@@ -87,7 +87,11 @@ function delCommence() {
         calcuScreen.textContent = txt;
     }
 
-    
+    notOperator = Number(txt.slice(txt.length))
+
+    if (!notOperator) {
+        operatorUsed = ""
+    }
 }
 
 //function to check if value is a single digit number
@@ -178,15 +182,21 @@ function startCalculate() {
     firstNum = Number(currentOp.slice(0, opIndex));
     secondNum = Number(currentOp.slice(opIndex + 1));
 
-    operationList(calcuScreen.textContent);
+    if (operatorUsed == '/' && secondNum == 0) {
+        alert("Error: Cannot be divided by 0")
+    } else {
+        operationList(calcuScreen.textContent);
 
-    calcuScreen.textContent = operate(operatorUsed, firstNum, secondNum);
+        calcuScreen.textContent = operate(operatorUsed, firstNum, secondNum);
 
-    operatorUsed = "";
-    firstNum = "";
-    secondNum = "";
+        operatorUsed = "";
+        firstNum = "";
+        secondNum = "";
 
-    tempNum = calcuScreen.textContent;
+        tempNum = calcuScreen.textContent;
+    }
+
+    
 }
 
 function operate(operator, a, b) {
