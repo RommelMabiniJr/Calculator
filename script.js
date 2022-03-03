@@ -6,6 +6,7 @@ let calcuScreen = document.querySelector(".display")
 const equalSign = document.querySelector(".equals-sign")
 const percent = document.querySelector(".percent")
 const del = document.querySelector(".delete")
+const decimal = document.querySelector(".decimal")
 
 
 let firstNum, secondNum, operatorUsed;
@@ -53,8 +54,6 @@ percent.addEventListener('click', function (e) {
 
 del.addEventListener('click', function () {
 
-    //TO BE FIXED!!
-
     if (list && isDigit(calcuScreen.textContent)) {
         calcuScreen.textContent = list.head.data;
 
@@ -75,10 +74,45 @@ del.addEventListener('click', function () {
     }
 })
 
+let dcmlExist;
+decimal.addEventListener('click', function (params) {
+
+    let txt = calcuScreen.textContent
+    let txtArr = txt.split("");
+    let opIndex = txtArr.findIndex(regexpTest)
+    operatorUsed = txtArr[opIndex]
+
+    firstNum = txt.slice(0, opIndex);
+    secondNum = txt.slice(opIndex + 1);
+
+    //TO BE FIXED!!
+    
+    //If screen has a dot without an operator
+    if (txt.includes('.')) {
+        if (operatorUsed && secondNum.includes('.')) {
+            dcmlExist = true;
+
+        } else if(operatorUsed){
+            dcmlExist = false;
+        } else {
+            dcmlExist = true;
+        }
+        
+    } else {
+        dcmlExist = false;
+    }
+
+    if (!dcmlExist) {
+        calcuScreen.textContent += "."
+        dcmlExist = true;
+    }
+})
+
 //Separated into function for reusability
 function delCommence() {
     let txt = calcuScreen.textContent;
     let notOperator;
+
 
     if (txt.length == 1) {
         calcuScreen.textContent = "";
@@ -89,6 +123,7 @@ function delCommence() {
 
     notOperator = Number(txt.slice(txt.length))
 
+    //or in simple terms if an operator
     if (!notOperator) {
         operatorUsed = ""
     }
@@ -154,6 +189,7 @@ function enterOperator(operator) {
         allowOperator = false;
         leftIsOperator = true;
         equalIsUsed = false;
+        dcmlExist = false;
 
     }
 }
