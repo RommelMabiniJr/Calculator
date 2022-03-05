@@ -15,6 +15,69 @@ let allowOperator = false;
 let equalIsUsed = false;
 let tempNum = "";
 
+
+document.addEventListener('keydown', (event) => {
+    let name = event.key;
+    let code = event.code;
+    if (name === 'Shift') {
+      // Do nothing.
+        return;
+    }
+    if (event.shiftKey) {
+        //alert(`Combination of ctrlKey + ${name} \n Key code Value: ${code}`);
+
+        if (regexpTest(name)) {
+            enterOperatorKeyboard(name);
+        } else if (name == '%') {
+            enterPercent();
+        }
+    } else {
+        //alert(`Key pressed ${name} \n Key code Value: ${code}`)
+        if (/[0-9]/.test(name)) {
+            //console.log(event);
+        
+            inputNumber(name);
+        } else if (name == 'Backspace') {
+            enterDelete();
+        } else if (name == '-' || name == '/') {
+            enterOperatorKeyboard(name);
+        } else if(name == '.') {
+            enterDecimal();
+        } else if (name == '=' || name == 'Enter') {
+            enterEqualSign();
+        } else if(name === 'c') {
+            resetEverything();
+        }
+    }
+}, false);
+
+function enterOperatorKeyboard(operator) {
+    
+    //this simply limits the operand entered one at a time unless a number is entered.
+    if (allowOperator) {
+
+        //automatically calculates unfinished operation if operand is clicked instead of equal sign
+        if (operatorUsed) {
+           tempNum = "";
+           startCalculate();
+       }
+
+       firstNum = tempNum;
+       tempNum = "";
+
+       operatorUsed = operator;
+       calcuScreen.textContent += operatorUsed;
+
+       allowOperator = false;
+       leftIsOperator = true;
+       equalIsUsed = false;
+       dcmlExist = false;
+
+   }
+}
+
+
+
 numBtns.forEach( button => {
     button.addEventListener('click', enterOperand)
 })
@@ -24,7 +87,9 @@ operators.forEach(button => {
 })
 
 
-equalSign.addEventListener('click', function(e) {
+equalSign.addEventListener('click', enterEqualSign)
+
+function enterEqualSign(e) {
     if (!leftIsOperator) {
         
         secondNum = tempNum;
@@ -34,12 +99,14 @@ equalSign.addEventListener('click', function(e) {
         operatorUsed = "";
         allowOperator = true;
     }
-})
+}
 
 
 clearScr.addEventListener('click', resetEverything)
 
-percent.addEventListener('click', function (e) {
+percent.addEventListener('click', enterPercent)
+
+function enterPercent(e) {
     if (tempNum !== '') {
         if (Number(calcuScreen.textContent)) {
             calcuScreen.textContent = Number(calcuScreen.textContent)/100;
@@ -47,14 +114,17 @@ percent.addEventListener('click', function (e) {
             
         } else {
             tempNum = Number(tempNum)/100;
+            breakDownOperation();
             calcuScreen.textContent = firstNum + operatorUsed + tempNum;
         }
     }
-})
+}
 
-del.addEventListener('click', function () {
+del.addEventListener('click', enterDelete)
 
-    if (list && isDigit(calcuScreen.textContent)) {
+function enterDelete(e) {
+
+    if ((list && isDigit(calcuScreen.textContent)) || (list && isStillANum(calcuScreen.textContent))) {
         calcuScreen.textContent = list.head.data;
 
         if (list.head.next) {
@@ -72,10 +142,15 @@ del.addEventListener('click', function () {
     } else {
         delCommence();
     }
-})
+
+    console.log(list);
+    console.log()
+}
 
 let dcmlExist;
-decimal.addEventListener('click', function (params) {
+decimal.addEventListener('click', enterDecimal)
+
+function enterDecimal(params) {
 
     let txt = calcuScreen.textContent
     let txtArr = txt.split("");
@@ -106,7 +181,7 @@ decimal.addEventListener('click', function (params) {
         calcuScreen.textContent += "."
         dcmlExist = true;
     }
-})
+}
 
 //Separated into function for reusability
 function delCommence() {
@@ -117,11 +192,12 @@ function delCommence() {
     if (txt.length == 1) {
         calcuScreen.textContent = "";
     } else {
+        notOperator = Number(txt.slice(txt.length))
         txt = txt.slice(0, txt.length - 1);
         calcuScreen.textContent = txt;
     }
 
-    notOperator = Number(txt.slice(txt.length))
+    console.log(txt)
 
     //or in simple terms if an operator
     if (!notOperator) {
@@ -132,6 +208,10 @@ function delCommence() {
 //function to check if value is a single digit number
 function isDigit(val) {
     return String(+val).charAt(0) == val;
+}
+
+function isStillANum(val) {
+    return Number(val) == val;
 }
 
 
@@ -149,12 +229,17 @@ function resetEverything() {
     equalIsUsed = false;
     tempNum = "";
     list = ""
+    dcmlExist = false;
 }
 
 function enterOperand(num) {
     
     let number = num.target.textContent
 
+    inputNumber(number);
+}
+
+function inputNumber(number) {
     if (equalIsUsed) {
         tempNum = "";
         calcuScreen.textContent = "";
@@ -194,7 +279,8 @@ function enterOperator(operator) {
     }
 }
 
-const ops = ['+', '-', '*', '/'];
+//the ++ is for the keyboard support
+const ops = ['+', '-', '*', '/', '++'];
 
 function regexpTest(element) {
 
@@ -205,10 +291,11 @@ function regexpTest(element) {
         }
         
     }
+
+    return false;
 }
 
-function startCalculate() {
-
+function breakDownOperation() {
     let currentOp = calcuScreen.textContent.split("");
     let opIndex = currentOp.findIndex(regexpTest);
 
@@ -217,6 +304,10 @@ function startCalculate() {
 
     firstNum = Number(currentOp.slice(0, opIndex));
     secondNum = Number(currentOp.slice(opIndex + 1));
+}
+
+function startCalculate() {
+    breakDownOperation();
 
     if (operatorUsed == '/' && secondNum == 0) {
         alert("Error: Cannot be divided by 0")
