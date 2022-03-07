@@ -1,3 +1,6 @@
+//BIG TASK: Restructure the entire code to avoid bugs
+
+
 const numBtns = document.querySelectorAll(".digit-con button")
 const operators = document.querySelectorAll(".operations-con .arithmetic")
 
@@ -294,16 +297,31 @@ function regexpTest(element) {
 
     return false;
 }
+let isNegative;
 
 function breakDownOperation() {
     let currentOp = calcuScreen.textContent.split("");
-    let opIndex = currentOp.findIndex(regexpTest);
+    isNegative = Number(currentOp[0]);
 
-    operatorUsed = currentOp[opIndex];
-    currentOp = currentOp.join("");
+    let opIndex;
+    let negSym;
+    if (!isNegative) {
+        negSym = currentOp.shift();
+        opIndex = currentOp.findIndex(regexpTest);
+        operatorUsed = currentOp[opIndex];
+        currentOp = currentOp.join("");
 
-    firstNum = Number(currentOp.slice(0, opIndex));
-    secondNum = Number(currentOp.slice(opIndex + 1));
+        firstNum = Number(negSym + currentOp.slice(0, opIndex));
+        secondNum = Number(currentOp.slice(opIndex + 1));
+    } else {
+        opIndex = currentOp.findIndex(regexpTest);
+        operatorUsed = currentOp[opIndex];
+        currentOp = currentOp.join("");
+
+        firstNum = Number(currentOp.slice(0, opIndex));
+        secondNum = Number(currentOp.slice(opIndex + 1));
+    }
+
 }
 
 function startCalculate() {
