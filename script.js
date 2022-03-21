@@ -10,13 +10,18 @@ const equalSign = document.querySelector(".equals-sign")
 const percent = document.querySelector(".percent")
 const del = document.querySelector(".delete")
 const decimal = document.querySelector(".decimal")
+const negPos = document.querySelector(".neg")
 
 
 let firstNum, secondNum, operatorUsed;
 let leftIsOperator = false;
 let allowOperator = false;
 let equalIsUsed = false;
+let negIsUsed = false;
 let tempNum = "";
+
+
+negPos.addEventListener('click', enterNeg)
 
 
 document.addEventListener('keydown', (event) => {
@@ -299,45 +304,16 @@ function regexpTest(element) {
 }
 let isNotNegative;
 
-function makeOperandNeg() {
-    let currentOp = calcuScreen.textContent.split("");
-    isNotNegative = Number(currentOp[0]);
+function enterNeg() {
 
-    let opIndex;
-    let negSym;
-
-    
-    if (!isNotNegative) {
-        negSym = currentOp.shift();
-        opIndex = currentOp.findIndex(regexpTest);
-
-        if (opIndex) {
-            operatorUsed = currentOp[opIndex];
-            currentOp = currentOp.join("");
-    
-            firstNum = Number(negSym + currentOp.slice(0, opIndex));
-            secondNum = Number(currentOp.slice(opIndex + 1));
-        } else {
-            
-            //since no operator is found, then screen is the first operand
-            firstNum = Number(calcuScreen.textContent)
-        }
-
-       
+    if (negIsUsed) {
+        delCommence()
+        negIsUsed = false
     } else {
-        opIndex = currentOp.findIndex(regexpTest);
-
-        if (opIndex) {
-            operatorUsed = currentOp[opIndex];
-            currentOp = currentOp.join("");
-
-            firstNum = Number(currentOp.slice(0, opIndex));
-            secondNum = Number(currentOp.slice(opIndex + 1));
-        } else {
-
-        }
-        
+        calcuScreen.textContent += "-";
+        negIsUsed = true;
     }
+    
 }
 
 function breakDownOperation() {
