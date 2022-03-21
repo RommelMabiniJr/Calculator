@@ -259,7 +259,7 @@ function inputNumber(number) {
 
 function enterOperator(operator) {
 
-    //this simply limits the operand entered one at a time unless a number is entered.
+    //this simply limits the operand entered one at a time until a number is entered.
     if (allowOperator) {
 
          //automatically calculates unfinished operation if operand is clicked instead of equal sign
@@ -297,15 +297,56 @@ function regexpTest(element) {
 
     return false;
 }
-let isNegative;
+let isNotNegative;
 
-function breakDownOperation() {
+function makeOperandNeg() {
     let currentOp = calcuScreen.textContent.split("");
-    isNegative = Number(currentOp[0]);
+    isNotNegative = Number(currentOp[0]);
 
     let opIndex;
     let negSym;
-    if (!isNegative) {
+
+    
+    if (!isNotNegative) {
+        negSym = currentOp.shift();
+        opIndex = currentOp.findIndex(regexpTest);
+
+        if (opIndex) {
+            operatorUsed = currentOp[opIndex];
+            currentOp = currentOp.join("");
+    
+            firstNum = Number(negSym + currentOp.slice(0, opIndex));
+            secondNum = Number(currentOp.slice(opIndex + 1));
+        } else {
+            
+            //since no operator is found, then screen is the first operand
+            firstNum = Number(calcuScreen.textContent)
+        }
+
+       
+    } else {
+        opIndex = currentOp.findIndex(regexpTest);
+
+        if (opIndex) {
+            operatorUsed = currentOp[opIndex];
+            currentOp = currentOp.join("");
+
+            firstNum = Number(currentOp.slice(0, opIndex));
+            secondNum = Number(currentOp.slice(opIndex + 1));
+        } else {
+
+        }
+        
+    }
+}
+
+function breakDownOperation() {
+    let currentOp = calcuScreen.textContent.split("");
+    isNotNegative = Number(currentOp[0]);
+
+    let opIndex;
+    let negSym;
+    if (!isNotNegative) {
         negSym = currentOp.shift();
         opIndex = currentOp.findIndex(regexpTest);
         operatorUsed = currentOp[opIndex];
