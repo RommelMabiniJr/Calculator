@@ -8,12 +8,24 @@
     margin: 250px 500px;
 }
 
+.calculator {
+    background-color: #534d56;
+    width: 500px;
+    padding: 10px 0;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
 button {
     font-family: 'Mada', sans-serif;
     height: 110px;
     width: 110px;
     font-size: 30px;
     font-weight: bold;
+    margin: 2px 0;
+    border-radius: 10px;
+    background-color: #F8F1FF;
+    color: #302e31;
 }
 
 .digital-con {
@@ -31,6 +43,7 @@ button {
 .operations-con {
     display: flex;
     flex-flow:  column wrap;
+    margin-left: 4px;
 }
 
 .allBtns {
@@ -39,10 +52,47 @@ button {
     justify-content: center;
 }
 
+.reflection-1,
+.reflection-2,
 .display {
-    background-color: darkolivegreen;
+    position: absolute;
+}
+
+
+.reflection-1,
+.reflection-2 {
+    background-color: #22e4cd;
+    height: 90px;
+    transform: skewX(-10deg);
+    opacity: 0.5;
+    margin-top: 5px;
+}
+
+.reflection-1 {
+    margin-left: 80px;
+    width: 50px;
+}
+
+.reflection-2 {
+    margin-left: 140px;
+    width: 30px;
+}
+
+.display {
+    background-color: #1B998B;
+    height: 90px;
+    width: 440px;
+    border-radius: 5px;
+    border: 5px inset #656176;
+    position: absolute;
+}
+
+.borderDisp {
     height: 100px;
     width: 450px;
     border-radius: 5px;
-    margin: 10px auto;
+    border: 5px solid #c5c3ca;
+    margin: 30px auto;
+    margin-top: 35px;
+    position: relative;
 }
