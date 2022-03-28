@@ -1,7 +1,7 @@
 //BIG TASK: Restructure the entire code to avoid bugs
 
 
-const numBtns = document.querySelectorAll(".digit-con button")
+const numBtns = document.querySelectorAll(".r1, .r2, .r3")
 const operators = document.querySelectorAll(".operations-con .arithmetic")
 
 const clearScr = document.querySelector(".clear")
@@ -40,9 +40,8 @@ document.addEventListener('keydown', (event) => {
             enterPercent();
         }
     } else {
-        //alert(`Key pressed ${name} \n Key code Value: ${code}`)
+
         if (/[0-9]/.test(name)) {
-            //console.log(event);
         
             inputNumber(name);
         } else if (name == 'Backspace') {
@@ -80,6 +79,7 @@ function enterOperatorKeyboard(operator) {
        leftIsOperator = true;
        equalIsUsed = false;
        dcmlExist = false;
+       negIsUsed = false;
 
    }
 }
@@ -155,6 +155,28 @@ function enterDelete(e) {
     console.log()
 }
 
+//Separated into function for reusability
+function delCommence() {
+    let txt = calcuScreen.textContent;
+    let notOperator;
+
+
+    if (txt.length == 1) {
+        calcuScreen.textContent = "";
+    } else {
+        notOperator = Number(txt.slice(txt.length))
+        txt = txt.slice(0, txt.length - 1);
+        calcuScreen.textContent = txt;
+    }
+
+    //or in simple terms if an operator
+    if (!notOperator) {
+        operatorUsed = "";
+        allowOperator = true;
+        negIsUsed = true;
+    }
+}
+
 let dcmlExist;
 decimal.addEventListener('click', enterDecimal)
 
@@ -188,28 +210,6 @@ function enterDecimal(params) {
     if (!dcmlExist) {
         calcuScreen.textContent += "."
         dcmlExist = true;
-    }
-}
-
-//Separated into function for reusability
-function delCommence() {
-    let txt = calcuScreen.textContent;
-    let notOperator;
-
-
-    if (txt.length == 1) {
-        calcuScreen.textContent = "";
-    } else {
-        notOperator = Number(txt.slice(txt.length))
-        txt = txt.slice(0, txt.length - 1);
-        calcuScreen.textContent = txt;
-    }
-
-    console.log(txt)
-
-    //or in simple terms if an operator
-    if (!notOperator) {
-        operatorUsed = ""
     }
 }
 
@@ -283,6 +283,7 @@ function enterOperator(operator) {
         leftIsOperator = true;
         equalIsUsed = false;
         dcmlExist = false;
+        negIsUsed = false;
 
     }
 }
