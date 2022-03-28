@@ -14,6 +14,7 @@
     padding: 10px 0;
     margin: 0 auto;
     border-radius: 8px;
+    box-shadow: 20px 20px 50px 10px #656176;
 }
 
 button {
@@ -95,4 +96,18 @@ button {
     margin: 30px auto;
     margin-top: 35px;
     position: relative;
+}
+
+.mini-squares-top {
+    height: 20px;
+    width: 100px;
+    float: right;
+    margin-right: 25px;
+    display: flex;
+}
+
+.mini-squares-top div {
+    background-color: #302e31;
+    border: 2px solid #534d56;
+    flex: 1 1 0;
 }
