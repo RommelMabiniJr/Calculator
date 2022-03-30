@@ -5,7 +5,7 @@ const numBtns = document.querySelectorAll(".r1, .r2, .r3")
 const operators = document.querySelectorAll(".operations-con .arithmetic")
 
 const clearScr = document.querySelector(".clear")
-let calcuScreen = document.querySelector(".display")
+let calcuScreen = document.querySelector(".inner-content")
 const equalSign = document.querySelector(".equals-sign")
 const percent = document.querySelector(".percent")
 const del = document.querySelector(".delete")
