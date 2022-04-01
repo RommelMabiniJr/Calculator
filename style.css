@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Mada:wght@700&family=Mulish:wght@200;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mada:wght@700&family=Mulish:wght@200;500;700&family=Orbitron&display=swap');
 
 * {
     font-family: 'Mulish', sans-serif;
@@ -25,6 +25,7 @@ button {
     font-weight: bold;
     margin: 2px 0;
     border-radius: 10px;
+    border: 2px outset #6c666f;
     background-color: #F8F1FF;
     color: #302e31;
 }
@@ -51,6 +52,7 @@ button {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 .reflection-1,
@@ -99,6 +101,8 @@ button {
     float: right;
     line-height: 1.6;
     color: #1e1d1f;
+    font-family: 'Orbitron', sans-serif;
+    padding-right: 2px;
 }
 
 .borderDisp {
@@ -123,4 +127,19 @@ button {
     background-color: #302e31;
     border: 2px solid #534d56;
     flex: 1 1 0;
+}
+
+.clear {
+    background-color: #e76f51;
+    color: #F8F1FF;
+}
+
+.operations-con button {
+    background-color: #f1faee;
+}
+
+.delete,
+.neg {
+    background-color: #669bbc;
+    color: #F8F1FF;
 }
