@@ -236,7 +236,7 @@ function resetEverything() {
     allowOperator = false;
     equalIsUsed = false;
     tempNum = "";
-    list = ""
+    list = "";
     dcmlExist = false;
 }
 
